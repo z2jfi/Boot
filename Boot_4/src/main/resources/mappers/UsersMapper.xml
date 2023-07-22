@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yefeng.boot_4.DAO.UsersMapper">
+
+    <resultMap id="BaseResultMap" type="com.yefeng.boot_4.pojo.Users">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="uname" column="uname" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="CHAR"/>
+            <result property="age" column="age" jdbcType="INTEGER"/>
+            <result property="date" column="date" jdbcType="TIMESTAMP"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="nativePlace" column="nativePlace" jdbcType="VARCHAR"/>
+            <result property="image" column="image" jdbcType="VARCHAR"/>
+            <result property="signature" column="signature" jdbcType="VARCHAR"/>
+            <result property="uid" column="uid" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uname,sex,
+        age,date,email,
+        nativePlace,image,signature,
+        uid
+    </sql>
+    <insert id="insertSelective">
+        insert into t_users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="uname != null">uname,</if>
+            <if test="sex != null">sex,</if>
+            <if test="age != null">age,</if>
+            <if test="date != null">date,</if>
+            <if test="email != null">email,</if>
+            <if test="nativePlace != null">nativePlace,</if>
+            <if test="image != null">image,</if>
+            <if test="signature != null">signature,</if>
+            <if test="uid != null">uid,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="uname != null">#{uname,jdbcType=VARCHAR},</if>
+            <if test="sex != null">#{sex,jdbcType=CHAR},</if>
+            <if test="age != null">#{age,jdbcType=INTEGER},</if>
+            <if test="date != null">#{date,jdbcType=TIMESTAMP},</if>
+            <if test="email != null">#{email,jdbcType=VARCHAR},</if>
+            <if test="nativePlace != null">#{nativePlace,jdbcType=VARCHAR},</if>
+            <if test="image != null">#{image,jdbcType=VARCHAR},</if>
+            <if test="signature != null">#{signature,jdbcType=VARCHAR},</if>
+            <if test="uid != null">#{uid,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+    <update id="updateSelective">
+        update t_users
+        <set>
+            <if test="uname != null">uname=#{uname,jdbcType=VARCHAR},</if>
+            <if test="sex != null">sex=#{sex,jdbcType=VARCHAR},</if>
+            <if test="age != null">age=#{age,jdbcType=NUMERIC},</if>
+            <if test="date != null">date=#{date,jdbcType=TIMESTAMP},</if>
+            <if test="email != null">email=#{email,jdbcType=VARCHAR},</if>
+            <if test="nativePlace != null">nativePlace=#{nativePlace,jdbcType=VARCHAR},</if>
+            <if test="image != null">image=#{image,jdbcType=VARCHAR},</if>
+            <if test="signature != null">signature=#{signature,jdbcType=VARCHAR},</if>
+            <if test="uid != null">uid=#{uid,jdbcType=NUMERIC},</if>
+        </set>
+        where uid = #{uid,jdbcType=NUMERIC}
+    </update>
+    <update id="updateUnameByUid">
+        update t_users
+        set uname = #{uname,jdbcType=VARCHAR}
+        where uid = #{uid,jdbcType=NUMERIC}
+    </update>
+    <select id="selectByUid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_users
+        where
+        uid = #{uid,jdbcType=NUMERIC}
+    </select>
+</mapper>

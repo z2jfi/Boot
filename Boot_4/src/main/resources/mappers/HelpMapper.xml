@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yefeng.boot_4.DAO.HelpMapper">
+
+    <resultMap id="BaseResultMap" type="com.yefeng.boot_4.pojo.Help">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="uid" column="uid" jdbcType="INTEGER"/>
+            <result property="bid" column="bid" jdbcType="INTEGER"/>
+            <result property="state" column="state" jdbcType="INTEGER"/>
+            <result property="num" column="num" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uid,bid,
+        state
+    </sql>
+    <insert id="insertSelective">
+        insert into t_help
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="uid != null">uid,</if>
+            <if test="bid != null">bid,</if>
+            <if test="state != null">state,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="uid != null">#{uid,jdbcType=INTEGER},</if>
+            <if test="bid != null">#{bid,jdbcType=INTEGER},</if>
+            <if test="state != null">#{state,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+    <select id="selectAllByBidAndUid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_help
+        where
+        bid = #{bid,jdbcType=NUMERIC}
+        AND uid = #{uid,jdbcType=NUMERIC}
+    </select>
+    <select id="searchAll" resultMap="BaseResultMap">
+        SELECT bid ,COUNT(bid) AS num FROM t_help where state = 1 GROUP BY bid
+    </select>
+    <select id="selectByUid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_help
+        where
+        uid = #{uid,jdbcType=NUMERIC}
+    </select>
+    <update id="updateSelective">
+        update t_help
+        <set>
+            <if test="uid != null">uid=#{uid,jdbcType=NUMERIC},</if>
+            <if test="bid != null">bid=#{bid,jdbcType=NUMERIC},</if>
+            <if test="state != null">state=#{state,jdbcType=NUMERIC},</if>
+            <if test="num != null">num=#{num,jdbcType=NUMERIC},</if>
+        </set>
+        where uid = #{uid,jdbcType=NUMERIC} and  bid = #{bid,jdbcType=NUMERIC}
+    </update>
+    <delete id="deleteByBid">
+        delete
+        from t_help
+        where bid = #{bid,jdbcType=NUMERIC}
+    </delete>
+
+    <select id="selectAllHelpByUid" resultMap="BaseResultMap">
+        SELECT SUM(t_help.state) as num
+        FROM ( SELECT id FROM t_blog WHERE uid = #{uid}) AS a
+                 LEFT JOIN t_help ON a.id = t_help.bid
+    </select>
+</mapper>

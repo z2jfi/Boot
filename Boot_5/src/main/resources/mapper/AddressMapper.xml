@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yefeng.ssm.boot_5.mapper.AddressMapper">
+
+    <resultMap id="BaseResultMap" type="com.yefeng.ssm.boot_5.pojo.Address">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="linkUser" column="link_user" jdbcType="VARCHAR"/>
+            <result property="linkAddress" column="link_address" jdbcType="VARCHAR"/>
+            <result property="linkPhone" column="link_phone" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,link_user,link_address,
+        link_phone,user_id
+    </sql>
+</mapper>

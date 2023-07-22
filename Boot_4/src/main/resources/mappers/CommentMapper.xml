@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yefeng.boot_4.DAO.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.yefeng.boot_4.pojo.Comment">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="uid" column="uid" jdbcType="INTEGER"/>
+            <result property="bid" column="bid" jdbcType="INTEGER"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="date" column="date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="CommentResultMap" type="com.yefeng.boot_4.pojo.Comment">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="bid" column="bid" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="date" column="date" jdbcType="TIMESTAMP"/>
+        <result property="total" column="total" jdbcType="INTEGER"></result>
+        <association property="users">
+            <result property="uname" column="uname" jdbcType="VARCHAR"></result>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,uid,bid,
+        content,date
+    </sql>
+    <insert id="insertSelective">
+        insert into t_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="uid != null">uid,</if>
+            <if test="bid != null">bid,</if>
+            <if test="content != null">content,</if>
+            <if test="date != null">date,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="uid != null">#{uid,jdbcType=INTEGER},</if>
+            <if test="bid != null">#{bid,jdbcType=INTEGER},</if>
+            <if test="content != null">#{content,jdbcType=VARCHAR},</if>
+            <if test="date != null">#{date,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <select id="selectAllByBid" resultMap="CommentResultMap">
+        SELECT t_comment.id, t_comment.content, t_comment.date, t_users.uname
+        FROM t_comment
+        LEFT JOIN t_blog ON (t_comment.bid = t_blog.id)
+        LEFT JOIN t_users ON t_comment.uid = t_users.uid
+        WHERE t_blog.id = ${bid}
+    </select>
+
+    <select id="selectCommentTotal" resultMap="CommentResultMap">
+        SELECT t_blog.id AS bid, COUNT(t_blog.id) AS total
+        FROM t_blog RIGHT JOIN t_comment ON (t_blog.id = t_comment.bid)
+        GROUP BY t_blog.id
+    </select>
+    <delete id="deleteByBid">
+        delete
+        from t_comment
+        where bid = #{bid,jdbcType=NUMERIC}
+    </delete>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yefeng.ssm.boot_5.mapper.GoodsMapper">
+
+    <resultMap id="BaseResultMap" type="com.yefeng.ssm.boot_5.pojo.Goods">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="no" column="no" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="discount" column="discount" jdbcType="DOUBLE"/>
+            <result property="store" column="store" jdbcType="INTEGER"/>
+            <result property="praise" column="praise" jdbcType="INTEGER"/>
+            <result property="sales" column="sales" jdbcType="INTEGER"/>
+            <result property="categoryId" column="category_id" jdbcType="BIGINT"/>
+            <result property="imgs" column="imgs" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+            <result property="recommend" column="recommend" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,description,
+        no,price,discount,
+        store,praise,sales,
+        category_id,imgs,create_time,
+        recommend
+    </sql>
+</mapper>

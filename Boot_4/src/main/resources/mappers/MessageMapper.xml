@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yefeng.boot_4.DAO.MessageMapper">
+
+    <resultMap id="BaseResultMap" type="com.yefeng.boot_4.pojo.Message">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="date" column="date" jdbcType="TIMESTAMP"/>
+            <result property="uid" column="uid" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="MessageResultMap" type="com.yefeng.boot_4.pojo.Message">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="date" column="date" jdbcType="TIMESTAMP"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <association property="users" javaType="com.yefeng.boot_4.pojo.Users">
+            <result property="uname" column="uname" jdbcType="VARCHAR"></result>
+            <result property="image" column="image" jdbcType="VARCHAR"></result>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,content,date,
+        uid
+    </sql>
+    <insert id="insertSelective">
+        insert into t_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="content != null">content,</if>
+            <if test="date != null">date,</if>
+            <if test="uid != null">uid,</if>
+            <if test="users != null">users,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="content != null">#{content,jdbcType=VARCHAR},</if>
+            <if test="date != null">#{date,jdbcType=TIMESTAMP},</if>
+            <if test="uid != null">#{uid,jdbcType=INTEGER},</if>
+            <if test="users != null">#{users},</if>
+        </trim>
+    </insert>
+    <select id="selectAll" resultMap="MessageResultMap">
+        SELECT t_message.content, t_message.date ,t_users.uname ,t_users.image
+        FROM t_message LEFT JOIN t_users ON t_message.uid = t_users.uid
+    </select>
+</mapper>
